@@ -1,0 +1,10 @@
+---
+#https://syspass-doc.readthedocs.io/en/3.1/installing/centos7.html
+- hosts: learningsys
+  gather_facts: yes
+  become: true
+  roles:
+    - base
+    - apache2
+    - chrony
+#
