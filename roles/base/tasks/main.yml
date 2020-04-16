@@ -1,0 +1,32 @@
+---
+- debug:
+    msg: "Current distribution is {{ ansible_facts.distribution }}"
+- name: Include Centos 7 tasks
+  include_tasks: centos7.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: Include Centos 8 tasks
+  include_tasks: centos8.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "8"
+
+- name: Include Ubuntu 18 tasks
+  include_tasks: ubuntu18.yml
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "18"
+
+- name: Set Timezone
+  command: "timedatectl set-timezone {{ Timezone }}"
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: "{{ locale }}"
+    state: present
+
+- name: Ensure set LANGS OK
+  shell: "localectl set-locale LANG='{{ locale }}' LC_CTYPE='{{ locale }}'LC_NUMERIC='{{ locale }}' LC_TIME='{{ locale }}' LC_COLLATE='{{ locale }}' LC_MONETARY='{{ locale }}' LC_MESSAGES='{{ locale }}' LC_PAPER='{{ locale }}' LC_NAME='{{ locale }}' LC_ADDRESS='{{ locale }}' LC_TELEPHONE='{{ locale }}' LC_MEASUREMENT='{{ locale }}' LC_IDENTIFICATION='{{ locale }}'"
+#

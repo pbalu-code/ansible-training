@@ -1,0 +1,16 @@
+---
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: Install lang files
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - "language-pack-{{ Default_lang_code }}"
+      - mc
+#
