@@ -1,0 +1,10 @@
+---
+- name: restart_ntp_service_ubuntu
+  service:
+    name: chrony
+    state: restarted
+
+- name: restart_ntp_service_centos
+  service:
+    name: chronyd.service
+    state: restarted

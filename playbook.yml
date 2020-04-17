@@ -6,5 +6,5 @@
   roles:
     - base
 #    - apache2
-#    - chrony
+    - chrony
 #

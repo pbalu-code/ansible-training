@@ -19,8 +19,13 @@
     - ansible_facts['distribution'] == "Ubuntu"
     - ansible_facts['distribution_major_version'] == "18"
 
-- name: Set Timezone
-  command: "timedatectl set-timezone {{ Timezone }}"
+#- name: Set Timezone
+#  command: "timedatectl set-timezone {{ Timezone }}"
+
+- name: Set timezone
+  timezone:
+    name: "{{ Timezone }}"
+
 
 - name: Ensure a locale exists
   locale_gen:

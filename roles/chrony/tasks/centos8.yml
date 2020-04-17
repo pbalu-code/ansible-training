@@ -1,0 +1,22 @@
+---
+- name: Install Chrony
+  yum:
+    name: chrony
+    state: present
+
+- name: Disable all other NTP servers
+  replace:
+    path: /etc/chrony.conf
+    regexp: '^(pool.*)$'
+    replace: '#\1'
+  when: disable_all_other_ntps
+
+- name: Set custom NTP server to be the first one
+  lineinfile:
+    path: /etc/chrony.conf
+    insertbefore: '^pool.*$'
+    state: present
+    firstmatch: yes
+    line: "pool {{ Timeserver }} iburst"
+  notify: restart_ntp_service_centos
+#

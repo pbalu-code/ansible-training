@@ -1,3 +1,4 @@
 ---
 Timeserver: time.kfki.hu
+disable_all_other_ntps: false
 #

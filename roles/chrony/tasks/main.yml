@@ -1,3 +1,21 @@
 ---
+- debug:
+    msg: "Current distribution is {{ ansible_facts.distribution }}"
+- name: Include Centos 7 tasks
+  include_tasks: centos7.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "7"
 
+- name: Include Centos 8 tasks
+  include_tasks: centos8.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "8"
+
+- name: Include Ubuntu 18 tasks
+  include_tasks: ubuntu18.yml
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "18"
 #
