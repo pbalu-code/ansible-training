@@ -8,3 +8,4 @@
   service:
     name: chronyd.service
     state: restarted
+
