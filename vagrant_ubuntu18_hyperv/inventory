@@ -1,0 +1,3 @@
+[ubuntu18]
+<your IP> ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no' sys_ansible_user=ansible sys_ansible_password=ansible
+#
