@@ -9,6 +9,12 @@
   tags: mariadb
 
 - include_tasks: install.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+- include_tasks: ubuntuinstall.yml
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+
 - include_tasks: config.yml
 - include_tasks: root-password.yml
 - include_tasks: databases.yml

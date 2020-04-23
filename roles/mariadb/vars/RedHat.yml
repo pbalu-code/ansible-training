@@ -1,10 +1,9 @@
 # roles/mariadb/vars/RedHat.yml
 ---
-
 mariadb_packages:
   - MariaDB-common
   - MariaDB-server
-  - MySQL-python
+#  - MySQL-python
 
 mariadb_socket: /var/lib/mysql/mysql.sock
 
