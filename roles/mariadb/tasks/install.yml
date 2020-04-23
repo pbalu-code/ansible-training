@@ -56,11 +56,20 @@
   shell: python -V | awk '{ print $2 }' | awk 'BEGIN { FS = "." } ; { print $1 }'
   register: pythonversion
 
-- name: Install MySQL-python Centos 8
+- name: Install MySQL-python
   package:
-    name: "python{{ pythonversion.stdout }}-PyMySQL"
+    name: "python3-PyMySQL"
     state: installed
-  tags: mariadb
   when:
+    - pythonversion.stdout == "3"
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "8"
+
+- name: Install MySQL-python
+  package:
+    name: "python-PyMySQL"
+    state: installed
+  when:
+    - pythonversion.stdout == "2"
     - ansible_facts['distribution'] == "CentOS"
     - ansible_facts['distribution_major_version'] == "8"
