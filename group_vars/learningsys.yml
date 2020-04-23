@@ -2,4 +2,12 @@
 Default_lang_code: hu
 locale: hu_HU.UTF-8
 Timezone: Europe/Budapest
+mariadb_root_password: Abrakadabra123
+mariadb_users:
+  - name: "{{ bacula_db_user }}"
+    password: "{{ bacula_db_password }}"
+    priv: '*.*:ALL,GRANT'
+
+bacula_db_user: baculadump
+bacula_db_password: xxxxxxxxxxx
 #
