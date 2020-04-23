@@ -30,22 +30,13 @@
     update_cache: yes
   tags: mariadb
 
-- name: Install MySQL-python
-  apt:
-    name: MySQL-python
-    state: installed
-  tags: mariadb
-  when:
-    - ansible_facts['distribution'] == "CentOS"
-    - ansible_facts['distribution_major_version'] == "7"
-
 - name: Determine Python version
   shell: python -V | awk '{ print $2 }' | awk 'BEGIN { FS = "." } ; { print $1 }'
   register: pythonversion
 
 - name: Install MySQL-python
   apt:
-    name: "python{{ pythonversion.stdout }}-pymysql"
+    name: "python3-pymysql"
     state: latest
   when: pythonversion.stdout == "3"
 
