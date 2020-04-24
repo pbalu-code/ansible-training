@@ -11,7 +11,8 @@
 - include_tasks: install.yml
   when:
     - ansible_facts['distribution'] == "CentOS"
-- include_tasks: ubuntuinstall.yml
+
+- include_tasks: installubuntu.yml
   when:
     - ansible_facts['distribution'] == "Ubuntu"
 

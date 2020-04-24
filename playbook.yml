@@ -4,7 +4,8 @@
   gather_facts: yes
   become: true
   roles:
-    - base
+#    - base
 #    - apache2
-    - chrony
+#    - chrony
+    - mariadb
 #

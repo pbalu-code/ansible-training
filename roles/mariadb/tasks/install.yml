@@ -52,16 +52,13 @@
     - ansible_facts['distribution'] == "CentOS"
     - ansible_facts['distribution_major_version'] == "7"
 
-- name: Determine Python version
-  shell: python -V | awk '{ print $2 }' | awk 'BEGIN { FS = "." } ; { print $1 }'
-  register: pythonversion
 
 - name: Install MySQL-python
   package:
     name: "python3-PyMySQL"
     state: installed
   when:
-    - pythonversion.stdout == "3"
+    - ansible_python["version"]["major"] == "3"
     - ansible_facts['distribution'] == "CentOS"
     - ansible_facts['distribution_major_version'] == "8"
 
@@ -70,6 +67,6 @@
     name: "python-PyMySQL"
     state: installed
   when:
-    - pythonversion.stdout == "2"
+    - ansible_python["version"]["major"] == "2"
     - ansible_facts['distribution'] == "CentOS"
     - ansible_facts['distribution_major_version'] == "8"

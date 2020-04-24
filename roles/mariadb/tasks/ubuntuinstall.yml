@@ -30,18 +30,15 @@
     update_cache: yes
   tags: mariadb
 
-- name: Determine Python version
-  shell: python -V | awk '{ print $2 }' | awk 'BEGIN { FS = "." } ; { print $1 }'
-  register: pythonversion
 
 - name: Install MySQL-python
   apt:
     name: "python3-pymysql"
     state: latest
-  when: pythonversion.stdout == "3"
+  when: ansible_python["version"]["major"] == "3"
 
 - name: Install MySQL-python
   apt:
     name: "python-pymysql"
     state: latest
-  when: pythonversion.stdout == "2"
+  when: ansible_python["version"]["major"] == "2"
