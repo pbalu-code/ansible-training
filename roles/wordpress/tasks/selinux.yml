@@ -1,0 +1,37 @@
+---
+- name: Selinux
+  block:
+  - name: Install selinux tools Centos 8
+    yum:
+      name: policycoreutils-python-utils
+    when:
+      - ansible_facts['distribution'] == "CentOS"
+      - ansible_facts['distribution_major_version'] == "8"
+
+  - name: Install basic tools Centos 7
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - libsemanage-python
+      - policycoreutils-python
+    when:
+      - ansible_facts['distribution'] == "CentOS"
+      - ansible_facts['distribution_major_version'] == "7"
+
+  - name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+    seboolean:
+      name: httpd_can_network_connect
+      state: yes
+      persistent: yes
+
+  - name: Allow apache to modify files in webroot
+    sefcontext:
+      target: "{{ webroot }}/public_html(/.*)?"
+      setype: httpd_sys_rw_content_t
+      state: present
+
+  - name: Apply new SELinux file context to filesystem
+    command: "restorecon -irv {{ webroot }}/public_html"
+
+  when: ansible_selinux.status == "enabled"

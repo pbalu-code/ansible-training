@@ -1,0 +1,56 @@
+---
+- debug:
+    msg: "Centos version: {{ ansible_distribution_version }}"
+
+- name: Add PHP repo Centos 7
+  yum_repository:
+    name: "remi-{{ PHP_version }}"
+    description: "Remi's PHP RPM repository for Enterprise Linux $releasever - $basearch"
+    mirrorlist: "https://rpms.remirepo.net/enterprise/$releasever/{{ PHP_version }}/mirror"
+    enabled: yes
+    gpgcheck: 1
+    gpgkey: https://rpms.remirepo.net/RPM-GPG-KEY-remi
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "7"
+
+
+- name: Disable old PHP's repo
+  shell:
+    cmd: dnf module reset php -y
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "8"
+
+- name: Set repo for PHP at Centos 8
+  shell:
+    cmd: "dnf module enable -y php:remi-{{ PHP_version_nu }}"
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "8"
+
+- name: Install PHP, Apache2
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - httpd
+    - mod_ssl
+#    - expect
+    - php
+    - php-opcache
+    - php-fpm
+    - php-gd
+    - php-intl
+    - php-json
+    - php-ldap
+    - php-mbstring
+    - php-mysqlnd
+    - php-pdo
+    - php-xml
+    - php-zip
+    - php-mcrypt
+    - php-readline
+    - php-curl
+    state: latest
+

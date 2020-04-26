@@ -13,4 +13,13 @@
     packages:
       - "language-pack-{{ Default_lang_code }}"
       - mc
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: "{{ locale }}"
+    state: present
+
+- name: Ensure set LANGS OK
+  shell: "localectl set-locale LANG='{{ locale }}' LC_CTYPE='{{ locale }}' LC_NUMERIC='{{ locale }}' LC_TIME='{{ locale }}' LC_COLLATE='{{ locale }}' LC_MONETARY='{{ locale }}' LC_MESSAGES='{{ locale }}' LC_PAPER='{{ locale }}' LC_NAME='{{ locale }}' LC_ADDRESS='{{ locale }}' LC_TELEPHONE='{{ locale }}' LC_MEASUREMENT='{{ locale }}' LC_IDENTIFICATION='{{ locale }}'"
+
 #

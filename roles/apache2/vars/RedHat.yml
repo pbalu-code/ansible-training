@@ -1,0 +1,6 @@
+---
+httpd_service: httpd
+apache_user: apache
+
+main_conf_path: /etc/httpd/conf/httpd.conf
+#

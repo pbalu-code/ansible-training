@@ -1,0 +1,54 @@
+---
+- name: epel1
+  yum:
+    name:
+      - epel-release
+      - wget
+      - yum-utils
+      - net-tools
+      - mc
+    state: present
+  become: true
+
+- name: Add Remi repo Centos 7
+  yum:
+    name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: "{{ locale }}"
+    state: present
+
+- name: Ensure set LANGS OK
+  shell: "localectl set-locale LANG='{{ locale }}' LC_CTYPE='{{ locale }}' LC_NUMERIC='{{ locale }}' LC_TIME='{{ locale }}' LC_COLLATE='{{ locale }}' LC_MONETARY='{{ locale }}' LC_MESSAGES='{{ locale }}' LC_PAPER='{{ locale }}' LC_NAME='{{ locale }}' LC_ADDRESS='{{ locale }}' LC_TELEPHONE='{{ locale }}' LC_MEASUREMENT='{{ locale }}' LC_IDENTIFICATION='{{ locale }}'"
+
+
+- name: Install lang files
+  package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - "langpacks-{{ Default_lang_code }}"
+      - langpacks-en
+      - yum-langpacks
+      - glibc-all-langpacks
+      - mc
+
+- name: Define needed locales (for example, can be set in vars or inventory)
+  set_fact:
+    system_settings_locales:
+      - en_US.UTF-8
+      - hu_HU.UTF-8
+
+#- name: Check existing locales
+#  shell: "locale -a | grep -i {{ item | regex_replace('-', '') | quote }}"
+#  register: found_locales
+#  changed_when: false
+#  failed_when: false
+#  loop: "{{ system_settings_locales }}"
+
+#- name: Create missing locales
+#  command: "localedef -i {{ item.item | regex_replace('(.*)\\..*', '\\1') | quote }} -f {{ item.item | regex_replace('.*\\.(.*)', '\\1') | quote }} {{ item.item | quote }}"
+#  when: item.rc != 0

@@ -1,0 +1,12 @@
+---
+webroot: /var/www/learnsys
+apache_user: apache
+webfolders:
+  - name: /var/www/learnsys
+    rights: '0775'
+  - name: /var/www/learnsys/public_html
+    rights: '0775'
+  - name: /var/www/learnsys/tmp
+    rights: '0777'
+  - name: /var/www/learnsys/logs
+    rights: '0775'

@@ -1,2 +1,39 @@
 ---
+#- name: Add an Apt signing key from URL
+#  apt_key:
+#    url: "{{ php_pgp_key }}"
+#    state: present
+
+- name: Add PHP repository
+  apt_repository:
+    repo: "{{ php_apt_repositories }}"
+    state: present
+
+- name: Install PHP, Apache2
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apache2
+    - libapache2-mod-php{{ PHP_version_nu }}
+    - php{{ PHP_version_nu }}
+    - php{{ PHP_version_nu }}-opcache
+    - php{{ PHP_version_nu }}-fpm
+    - php{{ PHP_version_nu }}-gd
+    - php{{ PHP_version_nu }}-intl
+    - php{{ PHP_version_nu }}-json
+    - php{{ PHP_version_nu }}-mbstring
+    - php{{ PHP_version_nu }}-mysqli
+    - php{{ PHP_version_nu }}-mysqlnd
+    - php{{ PHP_version_nu }}-pdo
+    - php{{ PHP_version_nu }}-xml
+    - php{{ PHP_version_nu }}-zip
+#    - php7.3-mcrypt
+    - php{{ PHP_version_nu }}-readline
+    - php{{ PHP_version_nu }}-curl
+    state: latest
+
+
+
 #

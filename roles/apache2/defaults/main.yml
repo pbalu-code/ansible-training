@@ -1,0 +1,15 @@
+---
+PHP_version: php73
+PHP_version_nu: 7.3
+webroot: /var/www/onesite
+webfolders:
+  - name: "{{ webroot }}"
+    rights: '0775'
+  - name: "{{ webroot }}/public_html"
+    rights: '0775'
+  - name: "{{ webroot }}/tmp"
+    rights: '0777'
+  - name: "{{ webroot }}/logs"
+    rights: '0775'
+
+Status_dev: false

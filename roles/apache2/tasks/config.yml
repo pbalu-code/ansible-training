@@ -1,0 +1,75 @@
+---
+- name: Create web folders
+  file:
+    path: "{{ item.name }}"
+    mode: "{{ item.rights }}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user }}"
+    state: directory
+  with_items: "{{ webfolders }}"
+
+- name: Set Listen httpd only on IPV4
+  lineinfile:
+    regexp: '^Listen.*$'
+    path: /etc/httpd/conf/httpd.conf
+    line: "Listen 0.0.0.0:80"
+
+- name: Set listen httpd-SSL only on IPV4
+  lineinfile:
+    regexp: '^Listen.*$'
+    path: /etc/httpd/conf.d/ssl.conf
+    line: Listen 0.0.0.0:443 https
+
+- name: Set Httpd server's token
+  lineinfile:
+    regexp: '^ServerTokens.*'
+    path: /etc/httpd/conf/httpd.conf
+    line: "ServerTokens Minimal"
+
+- name: Set Httpd server's signature
+  lineinfile:
+    regexp: '^ServerSignature.*'
+    path: /etc/httpd/conf/httpd.conf
+    line: "ServerSignature Off"
+
+- name: Set Httpd - Trace Off
+  lineinfile:
+    regexp: '^TraceEnable.*'
+    path: /etc/httpd/conf/httpd.conf
+    line: "TraceEnable Off"
+
+- name: Set Httpd - Doc root
+  lineinfile:
+    regexp: '^DocumentRoot.*'
+    path: /etc/httpd/conf/httpd.conf
+    line: "DocumentRoot {{ webroot }}/public_html"
+
+- name: Set ServerName
+  lineinfile:
+    regexp: '^ServerName.*$'
+    path: /etc/httpd/conf/httpd.conf
+    line: "ServerName {{ Server_name }}"
+
+
+- name: Enable service httpd, and not touch the state
+  become: true
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: PHP info page
+  become: true
+  lineinfile:
+    path: "{{ webroot }}/public_html/info.php"
+    regex: '.*phpinfo();.*'
+    owner: apache
+    group: apache
+    mode: '0664'
+    create: yes
+    line: '<?php phpinfo(); ?>'
+  when: Status_dev
+
+- debug: msg="Restart Apahe2"
+  changed_when: True
+  notify: restart Apache2

@@ -1,0 +1,78 @@
+---
+- name: Create web folders
+  file:
+    path: "{{ item.name }}"
+    mode: "{{ item.rights }}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user }}"
+    state: directory
+  with_items: "{{ webfolders }}"
+
+#- name: Set web folders directory access
+#  lineinfile:
+#    path: "{{ web_conf_path }}"
+#    regexp: '^<Directory "/var/www/html">.*$'
+#    line: "<Directory {{ webroot }}>"
+
+- name: Set Listen IPV4
+  lineinfile:
+    regexp: '^\s*Listen.*80$'
+    path: /etc/apache2/ports.conf
+    line: "Listen 0.0.0.0:80"
+
+- name: Set Listen IPV4 SSL
+  replace:
+    regexp: '^(\s*)Listen.*443$'
+    path: /etc/apache2/ports.conf
+    replace: '\1Listen 0.0.0.0:443'
+
+- name: Set Httpd - Doc root
+  lineinfile:
+    regexp: '^\s*DocumentRoot.*'
+    path: "{{ item }}"
+    line: "DocumentRoot {{ webroot }}/public_html"
+  with_items:
+    - "{{ web_conf_path }}"
+    - "{{ ssl_web_conf_path }}"
+
+- name: Set Vhost IPV4
+  lineinfile:
+    regexp: '^\s*<VirtualHost .*?:80>'
+    path: "{{ web_conf_path }}"
+    line: <VirtualHost 0.0.0.0:80>
+
+- name: Set Vhost SSL IPV4
+  lineinfile:
+    regexp: '^\s*<VirtualHost .*?:443>'
+    path: "{{ ssl_web_conf_path }}"
+    line: <VirtualHost 0.0.0.0:443>
+
+- name: Directory access settings
+  blockinfile:
+    path: "{{ item }}"
+    insertafter: '^\s*DocumentRoot.*?$'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK Dir"
+    block: |
+      <Directory {{ webroot }}/public_html>
+      #           IndexIgnore *.* .* *
+                  Options -Indexes
+                  AllowOverride All
+                  Order allow,deny
+                  allow from all
+      </Directory>
+  with_items:
+    - "{{ web_conf_path }}"
+    - "{{ ssl_web_conf_path }}"
+
+
+- name: Enable service httpd, and not touch the state
+  become: true
+  service:
+    name: "{{ httpd_service }}"
+    enabled: yes
+    state: started
+
+
+- debug: msg="Restart Apahe2"
+  changed_when: True
+  notify: restart Apache2

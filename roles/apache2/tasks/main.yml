@@ -1,1 +1,28 @@
 ---
+- name: Include distribution dependent variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: Include Centos's Install
+  include_tasks: centos.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+
+- name: Include Centos's Install
+  include_tasks: config.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+
+- name: Include Ubuntu's Install
+  include_tasks: ubuntu18.yml
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "18"
+
+- name: Include Ubuntu's confs
+  include_tasks: configubuntu.yml
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "18"

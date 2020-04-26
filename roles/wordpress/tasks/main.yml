@@ -1,0 +1,53 @@
+---
+- name: Check Wordress is already installed
+  stat:
+    path: "{{ webroot }}/public_html/index.php"
+  register: wordpress
+
+- name: Wordpress install
+  when: not wordpress.stat.exists
+  block:
+  - name: Include distribution dependent variables
+    include_vars: "{{ item }}"
+    with_first_found:
+      - "{{ ansible_distribution }}.yml"
+      - "{{ ansible_os_family }}.yml"
+
+  - name: Download Wordpress Tar gz
+    get_url:
+      url: "{{ wordpress_targz_url }}"
+      dest: /tmp/wordpress.tar.gz
+
+  - name: Unarchive a file that needs to be downloaded (added in 2.0)
+    unarchive:
+      src: "{{ wordpress_targz_url }}"
+      dest: "{{ webroot }}/tmp/"
+      remote_src: yes
+
+  - name: Place PHP files to doc root
+    copy:
+      remote_src: True
+      src: "{{ webroot }}/tmp/wordpress/"
+      dest: "{{ webroot }}/public_html"
+
+  - name: Remove TMP files
+    file:
+      path: "{{ webroot }}/tmp/wordpress/"
+      state: absent
+
+  - name: Recursively change ownership of a directory
+    file:
+      path: "{{ webroot }}/public_html"
+      recurse: yes
+      owner: "{{ apache_user }}"
+      group: "{{ apache_user }}"
+
+  - name: Change mode files
+    command: find {{ webroot }}/public_html/ -type f -exec chmod 664 {} \;
+
+  - name: Change mode files
+    command: find {{ webroot }}/public_html/ -type d -exec chmod 775 {} \;
+
+- name: Include Selinux tasks
+  include_tasks: selinux.yml
+  when: ansible_facts['distribution'] == "CentOS"

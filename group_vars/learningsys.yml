@@ -4,10 +4,15 @@ locale: hu_HU.UTF-8
 Timezone: Europe/Budapest
 mariadb_root_password: Abrakadabra123
 mariadb_users:
-  - name: "{{ bacula_db_user }}"
-    password: "{{ bacula_db_password }}"
-    priv: '*.*:ALL,GRANT'
+  - name: "{{ wordpress_db_user }}"
+    password: "{{ wordpress_db_password }}"
+    priv: 'learnsys.*:ALL'
 
-bacula_db_user: baculadump
-bacula_db_password: xxxxxxxxxxx
+mariadb_databases:
+  - name: learnsys
+webroot: /var/www/learnsys
+wordpress_db_user: wordpress
+wordpress_db_password: wordpress123
+
+Status_dev: true
 #
