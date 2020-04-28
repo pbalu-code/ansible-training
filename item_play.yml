@@ -4,17 +4,22 @@
 - hosts: localhost
   gather_facts: no
   vars:
-    images:
-      - first
-      - secound
+    creation:
+      - element: "light"
+        order: "first"
+      - element: "air"
+        order: "secound"
   tasks:
     - shell: "echo result-{{item}}"
       register: "r"
-      with_items: "{{ images }}"
+      with_items: "{{ creation }}"
 
     - debug: var=r
 
     - debug: msg="item.item={{item.item}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
+      with_items: "{{r.results}}"
+
+    - debug: msg="item.item['element']={{item.item['element']}}, item.item['element']={{item.item['order']}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
       with_items: "{{r.results}}"
 
     - debug: msg="Gets printed only if this item changed - {{item}}"
