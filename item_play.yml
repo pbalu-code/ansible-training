@@ -1,0 +1,22 @@
+---
+#Variables registered for a task that has with_items have different format, they contain results for all items.
+# ansible-playbook item_play.yml -l localhost
+- hosts: localhost
+  gather_facts: no
+  vars:
+    images:
+      - first
+      - secound
+  tasks:
+    - shell: "echo result-{{item}}"
+      register: "r"
+      with_items: "{{ images }}"
+
+    - debug: var=r
+
+    - debug: msg="item.item={{item.item}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
+      with_items: "{{r.results}}"
+
+    - debug: msg="Gets printed only if this item changed - {{item}}"
+      when: item.changed == true
+      with_items: "{{r.results}}"
