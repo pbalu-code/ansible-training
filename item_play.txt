@@ -1,0 +1,99 @@
+#ansible-playbook item_play.yml -l localhost
+PLAY [localhost] *******************************************************************************************************************************************************************************************************
+
+TASK [shell] ***********************************************************************************************************************************************************************************************************
+changed: [localhost] => (item=first)
+changed: [localhost] => (item=secound)
+
+TASK [debug] ***********************************************************************************************************************************************************************************************************
+ok: [localhost] => {
+    "r": {
+        "changed": true,
+        "msg": "All items completed",
+        "results": [
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "cmd": "echo result-first",
+                "delta": "0:00:00.001630",
+                "end": "2020-04-28 10:03:15.911585",
+                "failed": false,
+                "invocation": {
+                    "module_args": {
+                        "_raw_params": "echo result-first",
+                        "_uses_shell": true,
+                        "argv": null,
+                        "chdir": null,
+                        "creates": null,
+                        "executable": null,
+                        "removes": null,
+                        "stdin": null,
+                        "stdin_add_newline": true,
+                        "strip_empty_ends": true,
+                        "warn": true
+                    }
+                },
+                "item": "first",
+                "rc": 0,
+                "start": "2020-04-28 10:03:15.909955",
+                "stderr": "",
+                "stderr_lines": [],
+                "stdout": "result-first",
+                "stdout_lines": [
+                    "result-first"
+                ]
+            },
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "cmd": "echo result-secound",
+                "delta": "0:00:00.001532",
+                "end": "2020-04-28 10:03:16.052715",
+                "failed": false,
+                "invocation": {
+                    "module_args": {
+                        "_raw_params": "echo result-secound",
+                        "_uses_shell": true,
+                        "argv": null,
+                        "chdir": null,
+                        "creates": null,
+                        "executable": null,
+                        "removes": null,
+                        "stdin": null,
+                        "stdin_add_newline": true,
+                        "strip_empty_ends": true,
+                        "warn": true
+                    }
+                },
+                "item": "secound",
+                "rc": 0,
+                "start": "2020-04-28 10:03:16.051183",
+                "stderr": "",
+                "stderr_lines": [],
+                "stdout": "result-secound",
+                "stdout_lines": [
+                    "result-secound"
+                ]
+            }
+        ]
+    }
+}
+
+TASK [debug] ***********************************************************************************************************************************************************************************************************
+ok: [localhost] => (item={'cmd': 'echo result-first', 'stdout': 'result-first', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:15.909955', 'end': '2020-04-28 10:03:15.911585', 'delta': '0:00:00.001630', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-first', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-first'], 'stderr_lines': [], 'failed': False, 'item': 'first', 'ansible_loop_var': 'item'}) => {
+    "msg": "item.item=first, item.stdout=result-first, item.changed=True"
+}
+ok: [localhost] => (item={'cmd': 'echo result-secound', 'stdout': 'result-secound', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:16.051183', 'end': '2020-04-28 10:03:16.052715', 'delta': '0:00:00.001532', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-secound', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-secound'], 'stderr_lines': [], 'failed': False, 'item': 'secound', 'ansible_loop_var': 'item'}) => {
+    "msg": "item.item=secound, item.stdout=result-secound, item.changed=True"
+}
+
+TASK [debug] ***********************************************************************************************************************************************************************************************************
+ok: [localhost] => (item={'cmd': 'echo result-first', 'stdout': 'result-first', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:15.909955', 'end': '2020-04-28 10:03:15.911585', 'delta': '0:00:00.001630', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-first', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-first'], 'stderr_lines': [], 'failed': False, 'item': 'first', 'ansible_loop_var': 'item'}) => {
+    "msg": "Gets printed only if this item changed - {'cmd': 'echo result-first', 'stdout': 'result-first', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:15.909955', 'end': '2020-04-28 10:03:15.911585', 'delta': '0:00:00.001630', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-first', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-first'], 'stderr_lines': [], 'failed': False, 'item': 'first', 'ansible_loop_var': 'item'}"
+}
+ok: [localhost] => (item={'cmd': 'echo result-secound', 'stdout': 'result-secound', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:16.051183', 'end': '2020-04-28 10:03:16.052715', 'delta': '0:00:00.001532', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-secound', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-secound'], 'stderr_lines': [], 'failed': False, 'item': 'secound', 'ansible_loop_var': 'item'}) => {
+    "msg": "Gets printed only if this item changed - {'cmd': 'echo result-secound', 'stdout': 'result-secound', 'stderr': '', 'rc': 0, 'start': '2020-04-28 10:03:16.051183', 'end': '2020-04-28 10:03:16.052715', 'delta': '0:00:00.001532', 'changed': True, 'invocation': {'module_args': {'_raw_params': 'echo result-secound', '_uses_shell': True, 'warn': True, 'stdin_add_newline': True, 'strip_empty_ends': True, 'argv': None, 'chdir': None, 'executable': None, 'creates': None, 'removes': None, 'stdin': None}}, 'stdout_lines': ['result-secound'], 'stderr_lines': [], 'failed': False, 'item': 'secound', 'ansible_loop_var': 'item'}"
+}
+
+PLAY RECAP *************************************************************************************************************************************************************************************************************
+localhost                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
