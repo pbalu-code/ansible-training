@@ -19,7 +19,7 @@
     - debug: msg="item.item={{item.item}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
       with_items: "{{r.results}}"
 
-    - debug: msg="item.item['element']={{item.item['element']}}, item.item['element']={{item.item['order']}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
+    - debug: msg="item.item['element']={{item.item['element']}}, item.item['order']={{item.item['order']}}, item.stdout={{item.stdout}}, item.changed={{item.changed}}"
       with_items: "{{r.results}}"
 
     - debug: msg="Gets printed only if this item changed - {{item}}"
